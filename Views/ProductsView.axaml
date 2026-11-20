@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SupplyTrackingSystem.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="SupplyTrackingSystem.Views.ProductsView"
+             x:DataType="vm:ProductsViewModel">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <DataGrid Grid.Row="0" ItemsSource="{Binding Products}" 
+              SelectedItem="{Binding SelectedProduct}"
+              AutoGenerateColumns="False" IsReadOnly="True"
+              GridLinesVisibility="All" BorderThickness="1" Margin="5">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="100"/>
+        <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*"/>
+        <DataGridTextColumn Header="Ед. изм." Binding="{Binding Unit}" Width="80"/>
+        <DataGridTextColumn Header="Цена (₽)" Binding="{Binding Price, StringFormat=N0}" Width="120"/>
+        <DataGridTextColumn Header="Отдел (код)" Binding="{Binding DepartmentCode}" Width="120"/>
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Border Grid.Row="1" Background="#fafafa" BorderBrush="#ccc" BorderThickness="1" Padding="10" Margin="5">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Артикул:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Article}" IsReadOnly="True" Margin="5"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="Наименование:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Name}" Margin="5"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ед. изм.:" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Unit}" Margin="5"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Цена (₽):" VerticalAlignment="Center" Margin="5"/>
+        <NumericUpDown Grid.Row="1" Grid.Column="3" Value="{Binding Price}" 
+                       Minimum="0" Increment="100" FormatString="N0" Margin="5"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Отдел:" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" 
+                  ItemsSource="{Binding Departments}" 
+                  SelectedValue="{Binding SelectedDepartmentCode}"
+                  DisplayMemberBinding="{Binding Name}"
+                  SelectedValueBinding="{Binding DepartmentCode}"
+                  Margin="5"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" 
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="Добавить" Command="{Binding AddCommand}" Margin="5" 
+                  Background="#4CAF50" Foreground="White"/>
+          <Button Content="Обновить" Command="{Binding UpdateCommand}" Margin="5"
+                  IsEnabled="{Binding IsEditing}" Background="#2196F3" Foreground="White"/>
+          <Button Content="Удалить" Command="{Binding DeleteCommand}" Margin="5"
+                  IsEnabled="{Binding IsEditing}" Background="#f44336" Foreground="White"/>
+          <Button Content="Новый" Command="{Binding NewCommand}" Margin="5"
+                  Background="#757575" Foreground="White"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

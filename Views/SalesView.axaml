@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SupplyTrackingSystem.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="SupplyTrackingSystem.Views.SalesView"
+             x:DataType="vm:SalesViewModel">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <DataGrid Grid.Row="0" ItemsSource="{Binding Sales}" 
+              SelectedItem="{Binding SelectedSale}"
+              AutoGenerateColumns="False" IsReadOnly="True"
+              GridLinesVisibility="All" BorderThickness="1" Margin="5">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="ID" Binding="{Binding SaleId}" Width="60"/>
+        <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="80"/>
+        <DataGridTextColumn Header="Дата" Binding="{Binding SaleDateDisplay}" Width="100"/>
+        <DataGridTextColumn Header="Кол-во" Binding="{Binding Quantity}" Width="80"/>
+        <DataGridTextColumn Header="Отдел" Binding="{Binding DepartmentCode}" Width="80"/>
+        <DataGridTextColumn Header="Сумма (₽)" Binding="{Binding TotalAmount, StringFormat=N0}" Width="120"/>
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Border Grid.Row="1" Background="#fafafa" BorderBrush="#ccc" BorderThickness="1" Padding="10" Margin="5">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Товар:" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" 
+                  ItemsSource="{Binding Products}" 
+                  SelectedValue="{Binding SelectedArticle}"
+                  DisplayMemberBinding="{Binding Name}"
+                  SelectedValueBinding="{Binding Article}"
+                  Margin="5"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="Дата продажи:" VerticalAlignment="Center" Margin="5"/>
+        <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding SaleDate}" Margin="5"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Количество:" VerticalAlignment="Center" Margin="5"/>
+        <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Quantity}" 
+                       Minimum="1" Increment="1" FormatString="N0" Margin="5"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Отдел:" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Grid.Row="1" Grid.Column="3" 
+                  ItemsSource="{Binding Departments}" 
+                  SelectedValue="{Binding SelectedDepartmentCode}"
+                  DisplayMemberBinding="{Binding Name}"
+                  SelectedValueBinding="{Binding DepartmentCode}"
+                  Margin="5"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Text="{Binding StatusMessage}" VerticalAlignment="Center" 
+                   Foreground="Green" FontWeight="Bold" Margin="5"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" 
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="Добавить" Command="{Binding AddCommand}" Margin="5" 
+                  Background="#4CAF50" Foreground="White"/>
+          <Button Content="Обновить" Command="{Binding UpdateCommand}" Margin="5"
+                  IsEnabled="{Binding IsEditing}" Background="#2196F3" Foreground="White"/>
+          <Button Content="Удалить" Command="{Binding DeleteCommand}" Margin="5"
+                  IsEnabled="{Binding IsEditing}" Background="#f44336" Foreground="White"/>
+          <Button Content="Новый" Command="{Binding NewCommand}" Margin="5"
+                  Background="#757575" Foreground="White"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

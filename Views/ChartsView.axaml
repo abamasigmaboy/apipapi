@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SupplyTrackingSystem.ViewModels"
+             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="900"
+             x:Class="SupplyTrackingSystem.Views.ChartsView"
+             x:DataType="vm:ChartsViewModel">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+        <Button Content="Обновить" Command="{Binding RefreshChartsCommand}" Margin="5" Background="#2196F3" Foreground="White"/>
+        <Button Content="Сохранить PNG" Command="{Binding SaveChartCommand}" Margin="5" Background="#4CAF50" Foreground="White"/>
+      </StackPanel>
+
+      <Border Grid.Row="1" Grid.Column="0" BorderBrush="#ccc" BorderThickness="1" Margin="5" Background="#fafafa" MinHeight="350">
+        <Grid>
+          <TextBlock Text="Объём продаж по отделам" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" FontSize="16"/>
+          <lvc:CartesianChart Series="{Binding BarChartSeries}" XAxes="{Binding BarChartXAxes}" YAxes="{Binding BarChartYAxes}" 
+                              Margin="0,30,0,0" TooltipPosition="Top" MinHeight="300"/>
+        </Grid>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="1" BorderBrush="#ccc" BorderThickness="1" Margin="5" Background="#fafafa" MinHeight="350">
+        <Grid>
+          <TextBlock Text="Доля продаж по товарам" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" FontSize="16"/>
+          <lvc:PieChart Series="{Binding PieChartSeries}" Margin="0,30,0,0" TooltipPosition="Top" MinHeight="300"/>
+        </Grid>
+      </Border>
+
+      <Border Grid.Row="2" Grid.Column="0" BorderBrush="#ccc" BorderThickness="1" Margin="5" Background="#fafafa" MinHeight="350">
+        <Grid>
+          <TextBlock Text="Динамика продаж по дням" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" FontSize="16"/>
+          <lvc:CartesianChart Series="{Binding LineChartSeries}" XAxes="{Binding LineChartXAxes}" YAxes="{Binding LineChartYAxes}" 
+                              Margin="0,30,0,0" TooltipPosition="Top" MinHeight="300"/>
+        </Grid>
+      </Border>
+
+      <Border Grid.Row="2" Grid.Column="1" BorderBrush="#ccc" BorderThickness="1" Margin="5" Background="#fafafa" MinHeight="350">
+        <Grid>
+          <TextBlock Text="Распределение по ценовым категориям" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" FontSize="16"/>
+          <lvc:CartesianChart Series="{Binding HistogramSeries}" XAxes="{Binding HistogramXAxes}" YAxes="{Binding HistogramYAxes}" 
+                              Margin="0,30,0,0" TooltipPosition="Top" MinHeight="300"/>
+        </Grid>
+      </Border>
+    </Grid>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SupplyTrackingSystem.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="SupplyTrackingSystem.Views.ReportsView"
+             x:DataType="vm:ReportsViewModel">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0" Background="#fafafa" BorderBrush="#ccc" BorderThickness="1" Padding="10" Margin="5">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Отчёт:" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox ItemsSource="{Binding ReportNames}" SelectedIndex="{Binding SelectedReportIndex}" Width="300" Margin="5"/>
+
+        <TextBlock Text="С:" VerticalAlignment="Center" Margin="5"/>
+        <DatePicker SelectedDate="{Binding FilterDateFrom}" Margin="5"/>
+        <TextBlock Text="По:" VerticalAlignment="Center" Margin="5"/>
+        <DatePicker SelectedDate="{Binding FilterDateTo}" Margin="5"/>
+
+        <Button Content="Применить" Command="{Binding ApplyFiltersCommand}" Margin="5" Background="#2196F3" Foreground="White"/>
+        <Button Content="Сбросить" Command="{Binding ClearFiltersCommand}" Margin="5" Background="#757575" Foreground="White"/>
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Row="1" Background="#fafafa" BorderBrush="#ccc" BorderThickness="1" Padding="5" Margin="5">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Content="Excel" Command="{Binding ExportExcelCommand}" Margin="5" Background="#4CAF50" Foreground="White"/>
+        <Button Content="CSV" Command="{Binding ExportCsvCommand}" Margin="5" Background="#FF9800" Foreground="White"/>
+        <Button Content="PDF" Command="{Binding ExportPdfCommand}" Margin="5" Background="#f44336" Foreground="White"/>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="2" Margin="5">
+      <Grid IsVisible="{Binding SelectedReportIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=0}">
+        <DataGrid ItemsSource="{Binding DepartmentSummary}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="1">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Отдел" Binding="{Binding DepartmentName}" Width="*"/>
+            <DataGridTextColumn Header="Заведующий" Binding="{Binding Manager}" Width="*"/>
+            <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="150"/>
+            <DataGridTextColumn Header="План (₽)" Binding="{Binding DailyPlan, StringFormat=N0}" Width="120"/>
+            <DataGridTextColumn Header="Факт (₽)" Binding="{Binding ActualVolume, StringFormat=N0}" Width="120"/>
+            <DataGridTextColumn Header="% выполнения" Binding="{Binding CompletionPercent, StringFormat=F1}" Width="120"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+      <Grid IsVisible="{Binding SelectedReportIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=1}">
+        <DataGrid ItemsSource="{Binding ProductSummary}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="1">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="80"/>
+            <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*"/>
+            <DataGridTextColumn Header="Ед. изм." Binding="{Binding Unit}" Width="80"/>
+            <DataGridTextColumn Header="Цена (₽)" Binding="{Binding Price, StringFormat=N0}" Width="100"/>
+            <DataGridTextColumn Header="Кол-во" Binding="{Binding TotalQuantity}" Width="80"/>
+            <DataGridTextColumn Header="Выручка (₽)" Binding="{Binding TotalRevenue, StringFormat=N0}" Width="120"/>
+            <DataGridTextColumn Header="Ср./день" Binding="{Binding AvgDailyQuantity, StringFormat=F2}" Width="100"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+      <Grid IsVisible="{Binding SelectedReportIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=2}">
+        <DataGrid ItemsSource="{Binding ProductRating}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="1">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="80"/>
+            <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*"/>
+            <DataGridTextColumn Header="Выручка (₽)" Binding="{Binding TotalRevenue, StringFormat=N0}" Width="120"/>
+            <DataGridTextColumn Header="Доля %" Binding="{Binding SharePercent, StringFormat=F2}" Width="100"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+      <Grid IsVisible="{Binding SelectedReportIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=3}">
+        <DataGrid ItemsSource="{Binding DailySales}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="1">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Дата" Binding="{Binding DateDisplay}" Width="100"/>
+            <DataGridTextColumn Header="Продаж (шт.)" Binding="{Binding SalesCount}" Width="100"/>
+            <DataGridTextColumn Header="Выручка (₽)" Binding="{Binding TotalRevenue, StringFormat=N0}" Width="120"/>
+            <DataGridTextColumn Header="Средний чек (₽)" Binding="{Binding AvgCheck, StringFormat=N0}" Width="130"/>
+            <DataGridTextColumn Header="Лидер дня" Binding="{Binding TopProductName}" Width="*"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+      <Grid IsVisible="{Binding SelectedReportIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=4}">
+        <DataGrid ItemsSource="{Binding Underperformers}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" BorderThickness="1">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="80"/>
+            <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*"/>
+            <DataGridTextColumn Header="Ед. изм." Binding="{Binding Unit}" Width="80"/>
+            <DataGridTextColumn Header="Цена (₽)" Binding="{Binding Price, StringFormat=N0}" Width="100"/>
+            <DataGridTextColumn Header="Отдел (код)" Binding="{Binding DepartmentCode}" Width="120"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

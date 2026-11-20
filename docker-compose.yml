@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # 1. Полноценная база данных PostgreSQL для DBeaver и REST API
+  db:
+    image: postgres:16-alpine
+    container_name: trade_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: trade_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d trade_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. REST API сервис (ASP.NET Core Web API, Задание 7)
+  api:
+    build:
+      context: ./TradeRestAPI
+      dockerfile: Dockerfile
+    container_name: trade_api
+    restart: always
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=trade_db;Username=postgres;Password=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

@@ -1,0 +1,12 @@
+## .NET and Visual Studio ignore
+bin/
+obj/
+out/
+.vs/
+.vscode/
+*.user
+*.suo
+*.log
+
+# Docker
+postgres_data/

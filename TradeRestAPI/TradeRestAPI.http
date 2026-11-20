@@ -1,0 +1,73 @@
+@TradeRestAPI_HostAddress = http://localhost:5000
+
+### 1. Авторизация (Login) - получение JWT токена
+POST {{TradeRestAPI_HostAddress}}/api/Autorize/login?login=admin&password=admin123
+Content-Type: application/json
+
+### 2. Регистрация нового пользователя
+POST {{TradeRestAPI_HostAddress}}/api/Autorize/register
+Content-Type: application/json
+
+{
+  "login": "seller1",
+  "password": "password123",
+  "firstname": "Сергей",
+  "lastname": "Васильев",
+  "middlename": "Олегович",
+  "email": "seller@trade.local",
+  "phone": "8-999-555-44-33",
+  "passport": "4512 789012",
+  "type": "Seller"
+}
+
+### 3. ЗАДАНИЕ 7: Выручка от продажи товаров за май 2025 года (Отчёт из задания)
+GET {{TradeRestAPI_HostAddress}}/api/Report/task7-monthly-revenue?year=2025&month=5
+Accept: application/json
+
+### 4. Отчёт: Сводка по отделам и выполнение плана
+GET {{TradeRestAPI_HostAddress}}/api/Report/department-summary
+Accept: application/json
+
+### 5. Отчёт: Рейтинг товаров по выручке
+GET {{TradeRestAPI_HostAddress}}/api/Report/product-rating
+Accept: application/json
+
+### 6. Отчёт: Динамика продаж по дням
+GET {{TradeRestAPI_HostAddress}}/api/Report/daily-sales
+Accept: application/json
+
+### 7. Отчёт: Товары без продаж
+GET {{TradeRestAPI_HostAddress}}/api/Report/underperformers
+Accept: application/json
+
+### 8. Отделы: Получить первую страницу (с MemoryCache)
+GET {{TradeRestAPI_HostAddress}}/api/Department?page=1
+Accept: application/json
+
+### 9. Отделы: Получить все отделы
+GET {{TradeRestAPI_HostAddress}}/api/Department/all
+Accept: application/json
+
+### 10. Отделы: Получить отдел по коду
+GET {{TradeRestAPI_HostAddress}}/api/Department/1
+Accept: application/json
+
+### 11. Товары: Получить первую страницу (с MemoryCache)
+GET {{TradeRestAPI_HostAddress}}/api/Product?page=1
+Accept: application/json
+
+### 12. Товары: Получить все товары
+GET {{TradeRestAPI_HostAddress}}/api/Product/all
+Accept: application/json
+
+### 13. Товары: Получить товары отдела 1 (Электроника)
+GET {{TradeRestAPI_HostAddress}}/api/Product/by-department/1
+Accept: application/json
+
+### 14. Продажи: Получить страницу продаж
+GET {{TradeRestAPI_HostAddress}}/api/Sale?page=1
+Accept: application/json
+
+### 15. Продажи: Фильтрация по датам
+GET {{TradeRestAPI_HostAddress}}/api/Sale/filter?from=2025-05-20&to=2025-05-25&departmentCode=1
+Accept: application/json

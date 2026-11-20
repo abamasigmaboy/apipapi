@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SupplyTrackingSystem.csproj" />
+  <Project Path="TradeRestAPI/TradeRestAPI.csproj" />
+</Solution>
